@@ -9,7 +9,7 @@ from unicodedata import normalize
 
 def get_sentences_from_document(filename: str) -> List[str]:
     """ Load the target text file and return a list containing every sentence in it. """
-    with open(filename, "r") as file:
+    with open(filename, "r", encoding="utf8") as file:
         raw_text = file.read()
         sentences = raw_text.strip().split("\n")
     return sentences
@@ -26,7 +26,6 @@ def reduce_vocab(vocab: Dict[str, int], threshold: int) -> Set[str]:
     """ Return a set of words which have occurred at least the `threshold` number of times. """
     return set([word for word, cnt in vocab.items() if cnt >= threshold])
 
-#Updating the data set
 def update_dataset(sentences: List[str], vocab: Set[str]) -> List[str]:
     """ Take the original sentences and then use the cleaned and reduced vocabulary to update them. """
     new_sentences = []
@@ -59,6 +58,9 @@ def clean_sentences(lines: List[str]) -> List[str]:
         words = line.split()  # tokenize on whitespaces
         lowercase_words = [word.lower() for word in words]  # lowercase all the words
         punctuationless_words = [word.translate(table) for word in lowercase_words]  # remove all the punctuation marks
+        # WARNING: a small issue is that i'll -> ill and there is already a word called ill.
+        # We need to expand English contractions like i'll to i will. For now we expect that
+        # it will not affect the probability too noticeably.
         printable_words = [re_pat.sub("", word) for word in punctuationless_words]  # remove non-printable chars
         non_numeric_words = [word for word in printable_words if word.isalpha()]  # remove numbers
         cleaned_sentences.append(" ".join(non_numeric_words))
