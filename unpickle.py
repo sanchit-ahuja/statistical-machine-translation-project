@@ -1,7 +1,7 @@
 import pickle
 import argparse
 
-def unpickle(filename):
+def unpickle(filename: str) -> None:
     """ Take a .pkl (binary) file, load it into python and print it back in ASCII. """
     output_filename = ".".join(filename.split(".")[:-1]) + ".txt"
     unpickled_data = ""

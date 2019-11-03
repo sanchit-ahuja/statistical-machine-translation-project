@@ -2,7 +2,7 @@ import re
 import string
 import pickle
 import argparse
-from typing import List, Dict
+from typing import List, Dict, Set
 from collections import Counter
 from unicodedata import normalize
 
@@ -16,18 +16,18 @@ def get_sentences_from_document(filename: str) -> List[str]:
 
 def get_vocabulary_count(sentences: List[str]) -> Dict[str, int]:
     """ Return a mapping: {unique_word -> number_of_occurrences} based on the given sentences. """
-    voc = Counter()
+    voc = Counter()  # type: Counter
     for sentence in sentences:
         words = sentence.split()
         voc.update(words)
     return voc
 
-def reduce_vocab(vocab, threshold):
+def reduce_vocab(vocab: Dict[str, int], threshold: int) -> Set[str]:
     """ Return a set of words which have occurred at least the `threshold` number of times. """
     return set([word for word, cnt in vocab.items() if cnt >= threshold])
 
 #Updating the data set
-def update_dataset(sentences, vocab):
+def update_dataset(sentences: List[str], vocab: Set[str]) -> List[str]:
     """ Take the original sentences and then use the cleaned and reduced vocabulary to update them. """
     new_sentences = []
     for line in sentences:
@@ -64,7 +64,7 @@ def clean_sentences(lines: List[str]) -> List[str]:
         cleaned_sentences.append(" ".join(non_numeric_words))
     return cleaned_sentences
 
-def preprocess_file(input_filename, output_filename, vocab_reduction_threshold=4):
+def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_threshold: int=4) -> None:
     """ Take one of the original input files and then completely preprocess it. """
     # TODO: Add a check to skip steps if cleaned data exists.
     raw_sentences = get_sentences_from_document(input_filename)
