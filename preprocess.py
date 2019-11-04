@@ -7,6 +7,13 @@ from collections import Counter
 from unicodedata import normalize
 
 
+def printv(msg: str, v: bool, **kwargs) -> None:
+    """ Used to print a message only if the verbosity option has been enabled. """
+    kwargs.update(flush=True)
+    if v:
+        print(msg, **kwargs)
+    return
+
 def get_sentences_from_document(filename: str, percentage: int=100) -> List[str]:
     """ Load the target text file and return a list containing every sentence in it.
         Optionally, a percentage argument can also be passed to control the number of
@@ -73,16 +80,29 @@ def clean_sentences(lines: List[str]) -> List[str]:
         cleaned_sentences.append(" ".join(non_numeric_words))
     return cleaned_sentences
 
-def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_threshold: int=4, percentage: int=100) -> None:
+def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_threshold: int=4,
+                    percentage: int=100, verbose: bool=False) -> None:
     """ Take one of the original input files and then completely preprocess it. """
     # TODO: Add a check to skip steps if cleaned data exists.
+    printv("Getting sentences from document... ", verbose, end="")
     raw_sentences = get_sentences_from_document(input_filename, percentage)
+    printv("Done.", verbose)
+    printv("Cleaning/Normalizing sentences... ", verbose, end="")
     cleaned_sentences = clean_sentences(raw_sentences)
+    printv("Done.", verbose)
+    printv("Dumping un-reduced data to {}... ".format(output_filename + ".pkl"), verbose, end="")
     pickle.dump(cleaned_sentences, open(output_filename + ".pkl", "wb"))
+    printv("Done.", verbose)
+    printv("Generating reduced vocabulary... ", verbose, end="")
     vocab = get_vocabulary_count(cleaned_sentences)
     reduced_vocab = reduce_vocab(vocab, vocab_reduction_threshold)
+    printv("Done.", verbose)
+    printv("Updating dataset with reduced vocabulary... ", verbose, end="")
     new_data = update_dataset(cleaned_sentences, reduced_vocab)
+    printv("Done.", verbose)
+    printv("Dumping reduced data to {}... ".format(output_filename + ".reduced.pkl"), verbose, end="")
     pickle.dump(new_data, open(output_filename + ".reduced.pkl", "wb"))
+    printv("Done.", verbose)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -90,5 +110,9 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", help="path of file to write processed data to process without an extension.", default="output")
     parser.add_argument("-t", "--vocab_reduction_threshold", help="set the vocab reduction threshold.", default=4)
     parser.add_argument("-p", "--percentage", help="the percentage of the dataset to process, useful for generating smaller test sets.", default=100)
+    parser.add_argument("-v", "--verbose", help="Print what's going on to the console.", action="store_true")
     args = parser.parse_args()
-    preprocess_file(args.input, args.output, args.vocab_reduction_threshold, int(args.percentage))
+    percentage = int(args.percentage)
+    if args.verbose:
+        print("Beginning preprocessing, generating dataset ({}% of the input).".format(percentage))
+    preprocess_file(args.input, args.output, args.vocab_reduction_threshold, percentage, args.verbose)
