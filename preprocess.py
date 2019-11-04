@@ -80,7 +80,7 @@ def clean_sentences(lines: List[str]) -> List[str]:
         cleaned_sentences.append(" ".join(non_numeric_words))
     return cleaned_sentences
 
-def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_threshold: int=4,
+def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_threshold: int=5,
                     percentage: int=100, verbose: bool=False) -> None:
     """ Take one of the original input files and then completely preprocess it. """
     # TODO: Add a check to skip steps if cleaned data exists.
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="path of file to process.")
     parser.add_argument("-o", "--output", help="path of file to write processed data to process without an extension.", default="output")
-    parser.add_argument("-t", "--vocab_reduction_threshold", help="set the vocab reduction threshold.", default=4)
+    parser.add_argument("-t", "--vocab_reduction_threshold", help="set the vocab reduction threshold.", default=5)
     parser.add_argument("-p", "--percentage", help="the percentage of the dataset to process, useful for generating smaller test sets.", default=100)
     parser.add_argument("-v", "--verbose", help="Print what's going on to the console.", action="store_true")
     args = parser.parse_args()
