@@ -81,6 +81,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--input", help="path of file to process.", default="input.txt")
     parser.add_argument("-o", "--output", help="path of file to write processed data to process without an extension.", default="output")
-    parser.add_argument("-vrt", "--vocab_reduction_threshold", help="set the vocab reduction threshold.", default=4)
+    parser.add_argument("-t", "--vocab_reduction_threshold", help="set the vocab reduction threshold.", default=4)
     args = parser.parse_args()
     preprocess_file(args.input, args.output, args.vocab_reduction_threshold)
