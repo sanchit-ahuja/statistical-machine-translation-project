@@ -7,11 +7,18 @@ from collections import Counter
 from unicodedata import normalize
 
 
-def get_sentences_from_document(filename: str) -> List[str]:
-    """ Load the target text file and return a list containing every sentence in it. """
+def get_sentences_from_document(filename: str, percentage: int=100) -> List[str]:
+    """ Load the target text file and return a list containing every sentence in it.
+        Optionally, a percentage argument can also be passed to control the number of
+        lines to process - useful for generating smaller datasets. """
     with open(filename, "r", encoding="utf8") as file:
         raw_text = file.read()
         sentences = raw_text.strip().split("\n")
+    if percentage < 0 or percentage > 100:
+        raise ValueError("Percentage exceeded bounds.")
+    if percentage != 100:
+        stop_index = int((len(sentences)*percentage)/100)
+        sentences = sentences[0:stop_index]
     return sentences
 
 def get_vocabulary_count(sentences: List[str]) -> Dict[str, int]:
@@ -66,10 +73,10 @@ def clean_sentences(lines: List[str]) -> List[str]:
         cleaned_sentences.append(" ".join(non_numeric_words))
     return cleaned_sentences
 
-def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_threshold: int=4) -> None:
+def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_threshold: int=4, percentage: int=100) -> None:
     """ Take one of the original input files and then completely preprocess it. """
     # TODO: Add a check to skip steps if cleaned data exists.
-    raw_sentences = get_sentences_from_document(input_filename)
+    raw_sentences = get_sentences_from_document(input_filename, percentage)
     cleaned_sentences = clean_sentences(raw_sentences)
     pickle.dump(cleaned_sentences, open(output_filename + ".pkl", "wb"))
     vocab = get_vocabulary_count(cleaned_sentences)
@@ -82,5 +89,6 @@ if __name__ == "__main__":
     parser.add_argument("-i", "--input", help="path of file to process.", default="input.txt")
     parser.add_argument("-o", "--output", help="path of file to write processed data to process without an extension.", default="output")
     parser.add_argument("-t", "--vocab_reduction_threshold", help="set the vocab reduction threshold.", default=4)
+    parser.add_argument("-p", "--percentage", help="the percentage of the dataset to process, useful for generating smaller test sets.", default=100)
     args = parser.parse_args()
-    preprocess_file(args.input, args.output, args.vocab_reduction_threshold)
+    preprocess_file(args.input, args.output, args.vocab_reduction_threshold, int(args.percentage))
