@@ -115,4 +115,4 @@ if __name__ == "__main__":
     percentage = int(args.percentage)
     if args.verbose:
         print("Beginning preprocessing, generating dataset ({}% of the input).".format(percentage))
-    preprocess_file(args.input, args.output, args.vocab_reduction_threshold, percentage, args.verbose)
+    preprocess_file(args.input, args.output, int(args.vocab_reduction_threshold), percentage, args.verbose)
