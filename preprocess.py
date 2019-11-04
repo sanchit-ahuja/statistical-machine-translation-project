@@ -86,7 +86,7 @@ def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_t
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--input", help="path of file to process.", default="input.txt")
+    parser.add_argument("input", help="path of file to process.")
     parser.add_argument("-o", "--output", help="path of file to write processed data to process without an extension.", default="output")
     parser.add_argument("-t", "--vocab_reduction_threshold", help="set the vocab reduction threshold.", default=4)
     parser.add_argument("-p", "--percentage", help="the percentage of the dataset to process, useful for generating smaller test sets.", default=100)
