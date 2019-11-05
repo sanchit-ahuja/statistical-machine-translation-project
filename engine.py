@@ -15,7 +15,7 @@ def get_vocab(sentences: List[str]) -> Set[str]:
     """ Given a list of sentences, return the set of unique words."""
     vocab = set()
     for sentence in sentences:
-        words = sentence.split(" ")
+        words = sentence.split()
         for word in words:
             vocab.add(word)
     return vocab
@@ -88,11 +88,11 @@ def engine(dutch_sentences: List[str], english_sentences: List[str], max_iterati
         printv("Calculating probabilities and collecting counts... ", verbose, end="")
         for english_sentence, dutch_sentence in zip(english_sentences, dutch_sentences):
             subtotals = defaultdict(float)  # type: Dict[str, float]
-            for english_word in english_sentence.split(" "):
-                for dutch_word in dutch_sentence.split(" "):
+            for english_word in english_sentence.split():
+                for dutch_word in dutch_sentence.split():
                     subtotals[english_word] += translation_table[dutch_word][english_word]
-            for english_word in english_sentence.split(" "):
-                for dutch_word in dutch_sentence.split(" "):
+            for english_word in english_sentence.split():
+                for dutch_word in dutch_sentence.split():
                     amount = translation_table[dutch_word][english_word]/subtotals[english_word]
                     counts[dutch_word][english_word] += amount
                     totals[dutch_word] += amount
