@@ -8,8 +8,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     dutch_word = args.dutch_word
 
-    with open("trained_translation_table.pkl", "rb") as f:
-        data = pickle.load(f)
+    with open("translation_probabilities_table.pkl", "rb") as f:
+        data = pickle.load(f)["data"]
         f.close()
     sorted_data = sorted(data[args.dutch_word].items(), key=lambda entry: entry[1])[::-1]
     for e in sorted_data[0:15]:
