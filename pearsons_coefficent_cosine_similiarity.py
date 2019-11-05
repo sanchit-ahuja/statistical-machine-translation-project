@@ -13,14 +13,14 @@ def doc_vectors(sentence_list1: List[str],sentence_list2: List[str]) -> List:
     sentence_list1= clean_sentences(sentence_list1)
     sentence_list2= clean_sentences(sentence_list2)
     # getting vocab count for both
-    voc1=get_vocabulary_count(sentence_list1)
-    voc2=get_vocabulary_count(sentence_list2)
+    raw_voc1=get_vocabulary_count(sentence_list1)
+    raw_voc2=get_vocabulary_count(sentence_list2)
 
     # tf handling(logarithmic) -- ignoring idf for now- in voc1 and voc2, the term k has score voc1[k] and voc2[k]
     # note-
     st=time.time()
-    voc1={k: (1+log10(float(v))) for k,v in voc1.items()}
-    voc2={k: (1+log10(float(v))) for k,v in voc2.items()}
+    voc1={k: (1+log10(v)) for k,v in raw_voc1.items()}
+    voc2={k: (1+log10(v)) for k,v in raw_voc2.items()}
 
     # Calculating the magnitude of vectors- voc1 and voc 2 contain the non-zero parts of their respective vectors- squaring these yield the magnitude
     st=time.time()
@@ -51,8 +51,8 @@ def doc_vectors(sentence_list1: List[str],sentence_list2: List[str]) -> List:
 
     # creating the actual vectors:
     len_merge_dict=len(merge_dict)
-    vector1=[0]*len_merge_dict
-    vector2=[0]*len_merge_dict
+    vector1=[0.0]*len_merge_dict
+    vector2=[0.0]*len_merge_dict
 
     # dot_product
     dot_product=0.0
@@ -109,6 +109,9 @@ if __name__=='__main__':
     file2="test2.txt"
     # list of both vectors
     vector_list=doc_vectors(get_sentences_from_document(file1),get_sentences_from_document(file2))
+
+    print(vector_list)
+
     print("Cosine similiarity between docs is:{}".format(cosine_similiarity(vector_list)))
     print("Pearsons_coefficient between docs is:{}".format(pearsons_coefficient(vector_list)))
 
