@@ -52,21 +52,30 @@ def write_back_data(data: Dict[str, Any], output_filename: str, verbose: bool=Fa
     printv("Done.", verbose)
 
 def engine(dutch_sentences: List[str], english_sentences: List[str], max_iterations: int,
-           convergence_factor: float, output_filename: str, write_back_epoach: bool=False,
-           verbose: bool=False) -> TranslationTable:
+           convergence_factor: float, output_filename: str, resume_from_file: str,
+           write_back_epoach: bool=False, verbose: bool=False) -> TranslationTable:
     """ The engine for training the statistical machine translator based on the IBM Model 1
         (TODO: explain more here in this docstring). """
     printv("Determining the vocabularies... ", verbose, end="")
     english_vocab = get_vocab(english_sentences)
     dutch_vocab = get_vocab(dutch_sentences)
     printv("Done.", verbose)
-    printv("Intializing the translation probabilities table... ", verbose, end="")
-    initial_probability = 1/(len(english_vocab))
-    translation_table = {f: {e: initial_probability for e in english_vocab} for f in dutch_vocab}
-    printv("Done.", verbose)
+
+    if resume_from_file:
+        printv("Reloading the translation probabilities table... ", verbose, end="")
+        reloaded_data = unpickle(resume_from_file)
+        iteration = reloaded_data["iteration"]
+        translation_table = reloaded_data["data"]
+        printv("Done.", verbose)
+    else:
+        printv("Intializing the translation probabilities table... ", verbose, end="")
+        iteration = 0
+        initial_probability = 1/(len(english_vocab))
+        translation_table = {f: {e: initial_probability for e in english_vocab} for f in dutch_vocab}
+        printv("Done.", verbose)
+
     counts = {}  # type: TranslationTable
     printv("Beginning the Expectation-Maximization algorithm.", verbose)
-    iteration = 0
     while not converged(dutch_vocab, english_vocab, translation_table, counts, convergence_factor, max_iterations, iteration, verbose):
         start_time = time.time()
         iteration += 1
@@ -112,6 +121,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--max_iterations", help="The maximum number of iterations to run for before terminating training.", default=5)
     parser.add_argument("-c", "--convergence_factor", help="The convergence factor as a decimal, e.g. 0.0001 is 0.01%.", default=0.0001)
     parser.add_argument("-w", "--write_back_epoach" , help="This flag indicates that the translation probabilities table data should be written back to disk after each epoach.", action="store_true")
+    parser.add_argument("-r", "--resume_from_file" , help="Resume training using an existing dataset by specifying the file to use.", default="")
     args = parser.parse_args()
 
     training_set = int(args.percentage)
@@ -119,10 +129,10 @@ if __name__ == "__main__":
         raise ValueError("Invaild percentage value. Valid values: [1, 3, 5, 10].")
 
     printv("Beginning training with the {}% dataset.".format(training_set), args.verbose)
-    dutch_sentences = unpickle("datasets/dutch/dutch_{}p_5t.reduced.pkl".format(training_set))  # type: ignore
+    dutch_sentences = unpickle("datasets/dutch/dutch_{}p_5t.reduced.pkl".format(training_set))
     assert isinstance(dutch_sentences, List)  # for mypy
-    english_sentences = unpickle("datasets/english/english_{}p_5t.reduced.pkl".format(training_set))  # type: ignore
+    english_sentences = unpickle("datasets/english/english_{}p_5t.reduced.pkl".format(training_set))
     assert isinstance(english_sentences, List)  # for mypy
     engine(dutch_sentences, english_sentences, int(args.max_iterations), float(args.convergence_factor),
-           args.output, args.write_back_epoach, args.verbose)
+           args.output, args.resume_from_file, args.write_back_epoach, args.verbose)
     printv("Training complete.", args.verbose)
