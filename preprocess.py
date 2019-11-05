@@ -106,13 +106,28 @@ def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_t
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("input", help="path of file to process.")
+    parser.add_argument("input", help="path of file to process or the word \"all\" if you want to generate all default data.")
     parser.add_argument("-o", "--output", help="path of file to write processed data to process without an extension.", default="output")
     parser.add_argument("-t", "--vocab_reduction_threshold", help="set the vocab reduction threshold.", default=5)
     parser.add_argument("-p", "--percentage", help="the percentage of the dataset to process, useful for generating smaller test sets.", default=100)
     parser.add_argument("-v", "--verbose", help="Print what's going on to the console.", action="store_true")
     args = parser.parse_args()
-    percentage = int(args.percentage)
-    if args.verbose:
-        print("Beginning preprocessing, generating dataset ({}% of the input).".format(percentage))
-    preprocess_file(args.input, args.output, int(args.vocab_reduction_threshold), percentage, args.verbose)
+
+    if args.input == "all":
+        # TODO: Refactor the code so that when we are generating these datasets in bulk, we only
+        # have to do get_sentences_from_document once for each language and then we can just get
+        # the necessary percentages from list splicing the loaded data as needed. This will save
+        # a lot of read time.
+        percentages = [1, 3, 5, 10]
+        for language in ["dutch", "english"]:
+            for percentage in percentages:
+                if args.verbose:
+                    print("Beginning preprocessing, generating dataset ({}% of the input).".format(percentage))
+                input_filename = "datasets/complete/{}.txt".format(language.title())
+                output_filename = "datasets/{l}/{l}_{p}p_5t".format(l=language, p=percentage)
+                preprocess_file(input_filename, output_filename, int(args.vocab_reduction_threshold), percentage, args.verbose)
+    else:
+        percentage = int(args.percentage)
+        if args.verbose:
+            print("Beginning preprocessing, generating dataset ({}% of the input).".format(percentage))
+        preprocess_file(args.input, args.output, int(args.vocab_reduction_threshold), percentage, args.verbose)
