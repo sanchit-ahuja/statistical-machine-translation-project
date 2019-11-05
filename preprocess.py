@@ -55,7 +55,7 @@ def update_dataset(sentences: List[str], vocab: Set[str]) -> List[str]:
         new_sentences.append(new_line)
     return new_sentences
 
-def clean_sentences(lines: List[str]) -> List[str]:
+def clean_sentences(lines: List[str], keep_numbers: bool=False) -> List[str]:
     """ Normalize/clean the input lines by:
             1. Converting phonetic Latin characters to their simple English form. E.g. o` -> o
             2. Making all words lowercase.
@@ -76,7 +76,10 @@ def clean_sentences(lines: List[str]) -> List[str]:
         # We need to expand English contractions like i'll to i will. For now we expect that
         # it will not affect the probability too noticeably.
         printable_words = [re_pat.sub("", word) for word in punctuationless_words]  # remove non-printable chars
-        non_numeric_words = [word for word in printable_words if word.isalpha()]  # remove numbers
+        if keep_numbers:
+            non_numeric_words = [word for word in printable_words if (word.isalpha() or word.isnumeric())]  # remove numbers
+        else:
+            non_numeric_words = [word for word in printable_words if word.isalpha()]  # remove numbers
         cleaned_sentences.append(" ".join(non_numeric_words))
     return cleaned_sentences
 

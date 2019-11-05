@@ -14,7 +14,7 @@ def translate(dutch_sentence: str) -> str:
             english_estimate = sorted(entry.items(), key=lambda entry: entry[1])[-1]
             english_words.append(english_estimate)
         except KeyError:
-            # Then it might just be a name or a rare word, so let's just use it as it.
+            # Then it might just be a name, number or a rare word, so let's just use it as it.
             english_words.append(word)
     return " ".join(english_words)
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", help="The file to write the output to.")
     args = parser.parse_args()
     raw_sentences = get_sentences_from_document(args.document)
-    normalized_sentences = clean_sentences(raw_sentences)
+    normalized_sentences = clean_sentences(raw_sentences, keep_numbers=True)
     translated_sentences = [translate(sentence) for sentence in normalized_sentences]
     if args.output:
         with open(args.output, "w+") as f:
