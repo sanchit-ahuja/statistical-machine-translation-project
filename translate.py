@@ -10,8 +10,8 @@ def translate(dutch_sentence: str) -> str:
     english_words = []  # type: List[str]
     for word in dutch_sentence.split():
         try:
-            entry = translation_table[word]
-            english_estimate = sorted(entry.items(), key=lambda entry: entry[1])[-1]
+            entry = translation_table["data"][word]
+            english_estimate = sorted(entry.items(), key=lambda entry: entry[1])[-1][0]
             english_words.append(english_estimate)
         except KeyError:
             # Then it might just be a name, number or a rare word, so let's just use it as it.
@@ -32,4 +32,4 @@ if __name__ == "__main__":
                 f.write(sentence + ".\n")
     else:
         for sentence in translated_sentences:
-            print(sentence, end=".")
+            print(sentence + "\n", end=".")
