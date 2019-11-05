@@ -32,7 +32,7 @@ def converged(dutch_vocab: Set[str], english_vocab: Set[str], translation_table:
         # number of iterations.
         printv("Done.", verbose)
         return True
-    if iteration != 0:
+    if iteration != 0 and counts != {}:
         for dutch_word in dutch_vocab:
             for english_word in english_vocab:
                 if abs(translation_table[dutch_word][english_word] - counts[dutch_word][english_word]) > convergence_factor:
