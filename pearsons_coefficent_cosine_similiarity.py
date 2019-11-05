@@ -1,6 +1,7 @@
 # code to get pearsons coefficent
 
 import time
+import argparse
 from math import log10,sqrt
 from typing import List, Dict, Set
 from collections import Counter
@@ -103,16 +104,12 @@ def pearsons_coefficient(list_vectors: List) -> float:
 
 if __name__=='__main__':
 
-    start=time.time()
-    # files of documents to compare
-    file1="test1.txt"
-    file2="test2.txt"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("doc1", help="The first document input")
+    parser.add_argument("doc2", help="Print what's going on to the console.")
+    args = parser.parse_args()
     # list of both vectors
-    vector_list=doc_vectors(get_sentences_from_document(file1),get_sentences_from_document(file2))
-
-    print(vector_list)
+    vector_list=doc_vectors(get_sentences_from_document(args.doc1),get_sentences_from_document(args.doc2))
 
     print("Cosine similiarity between docs is:{}".format(cosine_similiarity(vector_list)))
     print("Pearsons_coefficient between docs is:{}".format(pearsons_coefficient(vector_list)))
-
-    print("\n In total, it took {} seconds".format(time.time()-start))
