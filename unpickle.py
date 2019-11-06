@@ -3,7 +3,7 @@ import pickle
 import argparse
 from typing import List, Dict, Union
 
-def unpickle(filename: str) -> Union[List[str], Dict[str, Dict[str, float]]]:
+def unpickle(filename: str) -> Union[List[str], Dict[str, Union[int, Dict[str, Dict[str, float]]]]]:
     """ Take a .pkl (binary) file, load it into python and print return the equivalent
     list of ASCII strings or equivalent dictionary. """
     unpickled_data = None
