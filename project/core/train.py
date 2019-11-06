@@ -123,7 +123,7 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", help="The file to write to without the file extension.", default="translation_probabilities_table")
     parser.add_argument("-p", "--percentage", help="Choose a preprocessed percentage to train on. Accepted values: [1, 3, 5, 10]", default=1)  # TODO: allow using non-standard datasets
     parser.add_argument("-m", "--max_iterations", help="The maximum number of iterations to run for before terminating training.", default=5)
-    parser.add_argument("-c", "--convergence_factor", help="The convergence factor as a decimal, e.g. 0.0001 is 0.01%.", default=0.0001)
+    parser.add_argument("-c", "--convergence_factor", help="The convergence factor as a decimal, e.g. 0.0001 is 0.01%%.", default=0.0001)
     parser.add_argument("-w", "--write_back_epoach" , help="This flag indicates that the translation probabilities table data should be written back to disk after each epoach.", action="store_true")
     parser.add_argument("-r", "--resume_from_file" , help="Resume training using an existing dataset by specifying the file to use.", default="")
     parser.add_argument("-i", "--invert", help="Invert the order of translation to English -> Dutch.", action="store_true")
