@@ -23,6 +23,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("document", help="The text file containing dutch sentences to translate. Each sentence must occur on a new line.")
     parser.add_argument("-o", "--output", help="The file to write the output to.")
+    parser.add_argument("-v", "--verbose", help="Enable verbose mode.", action="store_true")
     args = parser.parse_args()
     raw_sentences = get_sentences_from_document(args.document)
     normalized_sentences = clean_sentences(raw_sentences, keep_numbers=True)
