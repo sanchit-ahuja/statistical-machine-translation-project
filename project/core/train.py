@@ -6,8 +6,8 @@ from typing import List, Dict, Set, Any
 from collections import defaultdict
 
 # from other code in this folder:
-from unpickle import unpickle
-from preprocess import printv
+from project.core.preprocess import printv
+from project.tools.unpickle import unpickle
 
 TranslationTable = Dict[str, Dict[str, float]]  # {foreign word: {english word: probability}}
 
@@ -64,8 +64,11 @@ def engine(dutch_sentences: List[str], english_sentences: List[str], max_iterati
     if resume_from_file:
         printv("Reloading the translation probabilities table... ", verbose, end="")
         reloaded_data = unpickle(resume_from_file)
+        assert isinstance(reloaded_data, Dict)
         iteration = reloaded_data["iteration"]
+        assert isinstance(iteration, int)
         translation_table = reloaded_data["data"]
+        assert isinstance(translation_table, Dict)
         printv("Done.", verbose)
     else:
         printv("Intializing the translation probabilities table... ", verbose, end="")

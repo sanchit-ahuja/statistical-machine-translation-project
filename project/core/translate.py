@@ -1,7 +1,7 @@
 import argparse
-from unpickle import unpickle
-from typing import List
-from preprocess import get_sentences_from_document, clean_sentences
+from project.tools.unpickle import unpickle
+from typing import List, Dict
+from project.core.preprocess import get_sentences_from_document, clean_sentences, printv
 
 def translate(dutch_sentence: str) -> str:
     # NOTE: We will assume a linear correlation/alignment between
