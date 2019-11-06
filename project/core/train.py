@@ -51,7 +51,7 @@ def write_back_data(data: Dict[str, Any], output_filename: str, verbose: bool=Fa
         pickle.dump(data, f)
     printv("Done.", verbose)
 
-def engine(dutch_sentences: List[str], english_sentences: List[str], max_iterations: int,
+def train(dutch_sentences: List[str], english_sentences: List[str], max_iterations: int,
            convergence_factor: float, output_filename: str, resume_from_file: str,
            write_back_epoach: bool=False, verbose: bool=False) -> TranslationTable:
     """ The engine for training the statistical machine translator based on the IBM Model 1
@@ -112,7 +112,8 @@ def engine(dutch_sentences: List[str], english_sentences: List[str], max_iterati
         gc.collect()
         end_time = time.time()
         print("Completed iteration {} in {} seconds".format(iteration, end_time - start_time))
-        write_back_data({"iteration": iteration, "data": translation_table}, output_filename, verbose)
+        if write_back_epoach or (iteration == max_iterations):
+            write_back_data({"iteration": iteration, "data": translation_table}, output_filename, verbose)
 
     return translation_table
 
@@ -120,11 +121,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", help="Print what's going on to the console.", action="store_true")
     parser.add_argument("-o", "--output", help="The file to write to without the file extension.", default="translation_probabilities_table")
-    parser.add_argument("-p", "--percentage", help="Choose a preprocessed percentage to train on. Accepted values: [1, 3, 5, 10]", default=1)
+    parser.add_argument("-p", "--percentage", help="Choose a preprocessed percentage to train on. Accepted values: [1, 3, 5, 10]", default=1)  # TODO: allow using non-standard datasets
     parser.add_argument("-m", "--max_iterations", help="The maximum number of iterations to run for before terminating training.", default=5)
     parser.add_argument("-c", "--convergence_factor", help="The convergence factor as a decimal, e.g. 0.0001 is 0.01%.", default=0.0001)
     parser.add_argument("-w", "--write_back_epoach" , help="This flag indicates that the translation probabilities table data should be written back to disk after each epoach.", action="store_true")
     parser.add_argument("-r", "--resume_from_file" , help="Resume training using an existing dataset by specifying the file to use.", default="")
+    parser.add_argument("-i", "--invert", help="Invert the order of translation to English -> Dutch.", action="store_true")
     args = parser.parse_args()
 
     training_set = int(args.percentage)
@@ -132,10 +134,14 @@ if __name__ == "__main__":
         raise ValueError("Invaild percentage value. Valid values: [1, 3, 5, 10].")
 
     printv("Beginning training with the {}% dataset.".format(training_set), args.verbose)
-    dutch_sentences = unpickle("datasets/dutch/dutch_{}p_5t.reduced.pkl".format(training_set))
+    dutch_sentences = unpickle("datasets/training/dutch/dutch_{}p_5t.reduced.pkl".format(training_set))
     assert isinstance(dutch_sentences, List)  # for mypy
-    english_sentences = unpickle("datasets/english/english_{}p_5t.reduced.pkl".format(training_set))
+    english_sentences = unpickle("datasets/training/english/english_{}p_5t.reduced.pkl".format(training_set))
     assert isinstance(english_sentences, List)  # for mypy
-    engine(dutch_sentences, english_sentences, int(args.max_iterations), float(args.convergence_factor),
-           args.output, args.resume_from_file, args.write_back_epoach, args.verbose)
+    if args.invert:
+        train(english_sentences, dutch_sentences, int(args.max_iterations), float(args.convergence_factor),
+              args.output, args.resume_from_file, args.write_back_epoach, args.verbose)
+    else:
+        train(dutch_sentences, english_sentences, int(args.max_iterations), float(args.convergence_factor),
+              args.output, args.resume_from_file, args.write_back_epoach, args.verbose)
     printv("Training complete.", args.verbose)
