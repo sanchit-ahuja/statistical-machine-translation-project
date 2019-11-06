@@ -3,16 +3,16 @@ import collections
 from collections import defaultdict
 import time
 import gc
-from unpickle import unpickle
-from engine import get_vocab,converged,engine,printv,write_back_data
+from project.tools.unpickle import unpickle
+from project.core.train import get_vocab,converged,train,printv,write_back_data
 
 
-def engine2(dutch_sentences, english_sentences):
+def train2(dutch_sentences, english_sentences):
     a_dict = defaultdict(float)
     translation_table_prev = unpickle("translation_probabilities_table.pkl")
     translation_table_prev = translation_table_prev["data"]
 
-    # translation_table_prev = engine(dutch_sentences,english_sentences,max_iterations,0.0001,"","",False,False)
+    # translation_table_prev = train(dutch_sentences,english_sentences,max_iterations,0.0001,"","",False,False)
 
     for i in range(2): #Convergence loop running it for 2 iterations for obvious reasons
         count = defaultdict(float)
@@ -58,7 +58,7 @@ english_sentences = unpickle("datasets/english/english_1p_5t.reduced.pkl")
 english_sentences = english_sentences[:5]
 
 
-a,b = engine2(dutch_sentences,english_sentences)
+a,b = train2(dutch_sentences,english_sentences)
 
 def handle_alignment(translation_prob, alignment_prob,english_sentence,dutch_sentence):
     translation_ans = defaultdict(float)

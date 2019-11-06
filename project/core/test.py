@@ -103,11 +103,11 @@ def pearsons_coefficient(list_vectors: List) -> float:
     return numerator/denominator
 
 if __name__=='__main__':
-
     parser = argparse.ArgumentParser()
-    parser.add_argument("doc1", help="The first document input")
-    parser.add_argument("doc2", help="Print what's going on to the console.")
+    parser.add_argument("doc1", help="The first document to compare.")
+    parser.add_argument("doc2", help="The second document to compare.")
     args = parser.parse_args()
+
     # list of both vectors
     vector_list=doc_vectors(get_sentences_from_document(args.doc1),get_sentences_from_document(args.doc2))
 

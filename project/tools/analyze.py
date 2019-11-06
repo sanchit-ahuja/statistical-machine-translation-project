@@ -2,6 +2,8 @@ import json
 import pickle
 import argparse
 
+# Manually check to see how well the translation_probabilities_table was generated with this command line tool.
+# Pass a Dutch word (not a phrase) and see the top 10 most likely translations to English.
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("dutch_word", help="The dutch word to translate.")
