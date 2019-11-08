@@ -145,3 +145,30 @@ table and counts in memory simultaneously (since both of them are massive).
 2. The IBM Model 1 does not consider alignments so the translation sounds awkward despite it still
 capturing the essence of the sentence.
 4. Synonyms are problematic for exact translation and lead to lower cosine similarity ratings.
+
+<hr>
+
+###IBM Model 2
+
+#### Summary
+The IBM Model 2 has an additional model for alignment that is not present in Model 1. The translation
+of a foreign input word in position i to an English word in position j is modelled by an alignment
+probability distribution a(i|j,le, lf) where le and lf are the respective lengths of the English and foreign
+words.
+
+#### Step 1: Training IBM Model 2
+`train2.py` contains the code for training IBM Model 2. This takes in the two pre-processed datasets(English
+and foreign) as well as the file `translation_probabilities_table.pkl` generated from IBM Model 1 as inputs,
+and produces(as output) two files: an updated `final_translation_prob.pkl` as well as a new
+`final_alignment_prob.pkl` that contains the probabilities of all possible sentence alignments.
+Example usage:
+`python train2.py`
+
+#### Step 2: Use trained model to get final aligned sentences
+This takes in Dutch sentences and returns the corresponding English translation, with corrected
+alignments.
+This takes in the translation_probabilities_table and alignment_probability_table generated in the
+previous step, applies the translate function of IBM model 1 in order to get corresponding one-to-one
+mapping, and then applies alignment correction module to fix alignments.
+Example usage:
+`python translate2.py`
