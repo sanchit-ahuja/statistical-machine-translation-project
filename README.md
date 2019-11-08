@@ -8,7 +8,8 @@ Team #14:
   - [Nevin Thomas](https://github.com/lesasi) (2017A7PS1175P)
   - [Sanchit Ahuja](https://github.com/sanchit-ahuja) (2017A3PS0216P) [Maintainer of the
   primary GitHub mirror]
-  - [Satwadhi Das](https://github.com/SatwadhiDas) (2016B4A70622P)
+  - [Satwadhi Das](https://github.com/SatwadhiDas) (2016B4A70622P
+  )
 
 <hr>
 

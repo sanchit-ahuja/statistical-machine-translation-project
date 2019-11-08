@@ -12,7 +12,6 @@ def train2(dutch_sentences, english_sentences):
     translation_table_prev = unpickle("translation_probabilities_table.pkl")
     translation_table_prev = translation_table_prev["data"]
 
-    # translation_table_prev = train(dutch_sentences,english_sentences,max_iterations,0.0001,"","",False,False)
 
     for i in range(2): #Convergence loop running it for 2 iterations for obvious reasons
         count = defaultdict(float)
@@ -30,9 +29,10 @@ def train2(dutch_sentences, english_sentences):
                     a_dict[(i,j,le,lf)] = 1.0*(1/(lf+1))
                     s_total[e] += translation_table_prev[f][e]*a_dict[(i,j,le,lf)]
             print('Normalization')
+            #Compute Counts
             for (j,e) in enumerate(english_sentence.split(),1):
                 for (i,f) in enumerate(dutch_sentence.split(),1):
-                    a_dict[(i,j,le,lf)] = 1.0*(1/(lf+1))
+                    # a_dict[(i,j,le,lf)] = 1.0*(1/(lf+1))
                     c = (translation_table_prev[f][e]*a_dict[(i,j,le,lf)])/s_total[e]
                     count[(e,f)] += c
                     total[f] += c
@@ -52,9 +52,9 @@ def train2(dutch_sentences, english_sentences):
     return final_alignment_prob,final_translation_prob   
 
 
-dutch_sentences = unpickle("datasets/dutch/dutch_1p_5t.reduced.pkl")
+dutch_sentences = unpickle("datasets/training/dutch/dutch_1p_5t.reduced.pkl")
 dutch_sentences = dutch_sentences[:5]
-english_sentences = unpickle("datasets/english/english_1p_5t.reduced.pkl")
+english_sentences = unpickle("datasets/training/english/english_1p_5t.reduced.pkl")
 english_sentences = english_sentences[:5]
 
 
@@ -71,10 +71,17 @@ def handle_alignment(translation_prob, alignment_prob,english_sentence,dutch_sen
             if cur_max[1] < val:
                 cur_max = (i,val)
         translation_ans[j] = cur_max[0]
-    return translation_ans
+    return translation_ans 
 
 
 
+for es,ds in zip(english_sentences,dutch_sentences):
+    s = handle_alignment(b,a,es,ds)
+    ds = ds.split()
+    es = es.split()
+    temp = ''
+    for key,value in s.items():
+        temp += ds[value-1] + " "
+    print(temp)
 
-    # print(handle_alignment(b,a,es,ds),es,'1',ds)
-
+# {'dog':3,}
