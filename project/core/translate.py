@@ -45,7 +45,7 @@ def translate(dutch_sentence: str, translation_table: Dict[str, Dict[str, float]
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("document", help="The text file containing dutch sentences to translate. Each sentence must occur on a new line.")
-    parser.add_argument("-o", "--output", help="The file to write the output to.")
+    parser.add_argument("-o", "--output", help="The file to write the output to.", default="translation.txt")
     parser.add_argument("-t", "--translation_probabilities_table", help="The translations probability table to be used.", default="translation_probabilities_table.pkl")
     parser.add_argument("-v", "--verbose", help="Enable verbose mode.", action="store_true")
     parser.add_argument("-a", "--augment", help="Try to do some optimiztion and improve the translation using ad hoc methods.", action="store_true")
