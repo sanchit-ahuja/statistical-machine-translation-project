@@ -21,8 +21,8 @@ def train2(dutch_sentences, english_sentences):
         s_total = defaultdict(float)
         for english_sentence, dutch_sentence in zip(english_sentences,dutch_sentences):
             le = len(english_sentence)
-            lf = len(dutch_sentence)  
-            #Compute normalization   
+            lf = len(dutch_sentence)
+            #Compute normalization
             for (j,e) in enumerate(english_sentence.split(),1):
                 s_total[e] = 0
                 for (i,f) in enumerate(dutch_sentence.split(),1):
@@ -49,7 +49,7 @@ def train2(dutch_sentences, english_sentences):
         for i,j,le,lf in count_a.keys():
             final_alignment_prob[(i,j,le,lf)] = count_a[(i,j,le,lf)]/total_a[(j,le,lf)]
 
-    return final_alignment_prob,final_translation_prob   
+    return final_alignment_prob,final_translation_prob
 
 
 dutch_sentences = unpickle("datasets/training/dutch/dutch_1p_5t.reduced.pkl")
@@ -57,13 +57,16 @@ dutch_sentences = dutch_sentences[:5]
 english_sentences = unpickle("datasets/training/english/english_1p_5t.reduced.pkl")
 english_sentences = english_sentences[:5]
 
-
-a,b = train2(dutch_sentences,english_sentences)
+st=time.time()
+b,a = train2(dutch_sentences,english_sentences)
+print("Time taken for training = {}s".format(time.time()-st))
 
 def handle_alignment(translation_prob, alignment_prob,english_sentence,dutch_sentence):
     translation_ans = defaultdict(float)
     l_e = len(english_sentence)
     l_f = len(dutch_sentence)
+    final_english_sentence= dict()
+
     for (j,e) in enumerate(english_sentence.split(),1):
         cur_max = (0,-1)
         for (i,f) in enumerate(dutch_sentence.split(),1):
@@ -71,17 +74,13 @@ def handle_alignment(translation_prob, alignment_prob,english_sentence,dutch_sen
             if cur_max[1] < val:
                 cur_max = (i,val)
         translation_ans[j] = cur_max[0]
-    return translation_ans 
+        final_english_sentence[translation_ans[j]]= e
 
 
 
+    return final_english_sentence
+
+st=time.time()
 for es,ds in zip(english_sentences,dutch_sentences):
-    s = handle_alignment(b,a,es,ds)
-    ds = ds.split()
-    es = es.split()
-    temp = ''
-    for key,value in s.items():
-        temp += ds[value-1] + " "
-    print(temp)
-
-# {'dog':3,}
+    print(handle_alignment(b,a,es,ds))
+print("Time taken for getting sentences = {}s".format(time.time()-st))
