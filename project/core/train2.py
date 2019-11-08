@@ -14,7 +14,7 @@ def train2(dutch_sentences, english_sentences):
     translation_table_prev = translation_table_prev["data"]
 
     cnt = 0
-    for i in range(11): #Convergence loop running it for 2 iterations for obvious reasons
+    for i in range(6):
         cnt += 1
         print("Iteration: ",cnt)
         count = defaultdict(float)
@@ -31,7 +31,7 @@ def train2(dutch_sentences, english_sentences):
                 for (i,f) in enumerate(dutch_sentence.split(),1):
                     a_dict[(i,j,le,lf)] = 1.0*(1/(lf+1))
                     s_total[e] += translation_table_prev[f][e]*a_dict[(i,j,le,lf)]
-            print('Normalization')
+            # print('Normalization')
             #Compute Counts
             for (j,e) in enumerate(english_sentence.split(),1):
                 for (i,f) in enumerate(dutch_sentence.split(),1):
@@ -41,7 +41,7 @@ def train2(dutch_sentences, english_sentences):
                     total[f] += c
                     count_a[(i,j,le,lf)] += c
                     total_a[(j,le,lf)] += c
-            print('Cnt')
+            # print('Cnt')
 
         #estimate probabilites
         final_translation_prob = defaultdict(float)
