@@ -15,7 +15,7 @@ def printv(msg: str, v: bool, **kwargs) -> None:
         print(msg, **kwargs)
     return
 
-def get_sentences_from_document(filename: str, percentage: int=100) -> List[str]:
+def get_sentences_from_document(filename: str, percentage: int=100, from_end: bool=False) -> List[str]:
     """ Load the target text file and return a list containing every sentence in it.
         Optionally, a percentage argument can also be passed to control the number of
         lines to process - useful for generating smaller datasets. """
@@ -26,7 +26,10 @@ def get_sentences_from_document(filename: str, percentage: int=100) -> List[str]
         raise ValueError("Percentage exceeded bounds.")
     if percentage != 100:
         stop_index = int((len(sentences)*percentage)/100)
-        sentences = sentences[0:stop_index]
+        if not from_end:
+            sentences = sentences[0:stop_index]
+        else:
+            sentences = sentences[-1:-stop_index:-1]  # Follow reverse order, start collecting from the last sentence.
     return sentences
 
 def get_vocabulary_count(sentences: List[str]) -> Dict[str, int]:
@@ -85,11 +88,11 @@ def clean_sentences(lines: List[str], keep_numbers: bool=False) -> List[str]:
     return cleaned_sentences
 
 def preprocess_file(input_filename: str, output_filename: str, vocab_reduction_threshold: int=5,
-                    percentage: int=100, verbose: bool=False) -> None:
+                    percentage: int=100, verbose: bool=False, from_end: bool=False) -> None:
     """ Take one of the original input files and then completely preprocess it. """
     # TODO: Add a check to skip steps if cleaned data exists.
     printv("Getting sentences from document... ", verbose, end="")
-    raw_sentences = get_sentences_from_document(input_filename, percentage)
+    raw_sentences = get_sentences_from_document(input_filename, percentage, from_end)
     printv("Done.", verbose)
     printv("Cleaning/Normalizing sentences... ", verbose, end="")
     cleaned_sentences = clean_sentences(raw_sentences)
@@ -115,6 +118,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--vocab_reduction_threshold", help="Set the vocab reduction threshold - number of times a word must occur before being added to the vocabulary.", default=5)
     parser.add_argument("-p", "--percentage", help="The percentage of the dataset to process, useful for generating smaller training or test sets.", default=100)
     parser.add_argument("-v", "--verbose", help="Print what's going on to the console.", action="store_true")
+    parser.add_argument("-e", "--from_end", help="Use sentences from the end of the raw data. Useful for generating testing data.", action="store_true")
     args = parser.parse_args()
 
     if args.input == "all":
@@ -131,7 +135,7 @@ if __name__ == "__main__":
                     print("Beginning preprocessing, generating dataset ({}% of the input).".format(percentage))
                 input_filename = os.path.join(os.path.join(DATASETS_DIR, "raw"), "{}.txt".format(language.title()))
                 output_filename = os.path.join(os.path.join(os.path.join(DATASETS_DIR, "training"), language), "{}_{}p_5t".format(language, percentage))
-                preprocess_file(input_filename, output_filename, int(args.vocab_reduction_threshold), percentage, args.verbose)
+                preprocess_file(input_filename, output_filename, int(args.vocab_reduction_threshold), percentage, args.verbose, args.from_end)
     else:
         percentage = int(args.percentage)
         if args.verbose:
