@@ -1,5 +1,8 @@
 *.txt
 *.pkl
+*.vscode
+
 .mypy_cache/
 __pycache__/
-*.vscode
+datasets/
+docs/

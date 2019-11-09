@@ -3,12 +3,13 @@ Official repository for team #14 in *CS F469: Information Retrieval* [2019-20 Fa
 at BITS Pilani, Pilani.  
 
 Team #14:
-  - [Hemanth V. Alluri](https://github.com/Hypro999) (2017A7PS1170P)
+  - [Hemanth V. Alluri](https://github.com/Hypro999) (2017A7PS1170P) [Maintainer of the datasets
+  on Google Drive]
   - [S. Hariharan](https://github.com/hariharan-srikrishnan) (2017A7PS0134P)
   - [Nevin Thomas](https://github.com/lesasi) (2017A7PS1175P)
   - [Sanchit Ahuja](https://github.com/sanchit-ahuja) (2017A3PS0216P) [Maintainer of the
-  primary GitHub mirror]
-  - Satwadhi Das (2016B4A70622P)
+  GitHub mirror]
+  - Satwadhi Das (2016B4A70622P) [Q29udHJpYnV0ZWQgbm90aGluZyB0byB0aGUgcHJvamVjdC4=]
 
 <hr>
 
@@ -41,19 +42,23 @@ data will actually fit in memory).
 ### Directory Structure
 Note: `/` references this repository's root and not the file system root.
 
-#### /datasets
-As the name implies, all of our datasets are stored here.
-1. **/datasets/raw**: The raw parallel corpus between English and Dutch as provided by the
-course instructor. Currently in a zipped format.
-2. **/datasets/testing**: The test data to use after training is over.
-3. **/datasets/training**: The preprocessed data from the raw parallel corpus labelled by
-percentage of the original corpus used and the reduction threshold value.
-4. **/datasets/model**: The results of our training are stored here based on the dataset used
-for training, and number of iterations spent training. Since the files can be very large,
-they are not included in this git repository.
+#### /datasets [on [Google Drive](https://drive.google.com/drive/folders/1efH-6oDGVqrvrLyjAm2XcZqd9f-_SXGO?usp=sharing)]
+As the name implies, all of our datasets are stored here.  
 
-#### /docs
-Just a few relevant documents for this course like powerpoint presentations on SMT and the IBM models.
+The results report is also available here.
+1. **/datasets/raw:** The raw parallel corpus between English and Dutch as provided by the
+course instructor. Currently in a zipped format.
+2. **/datasets/testing:** The test data to use after training is over.
+3. **/datasets/training:** The preprocessed data from the raw parallel corpus labelled by
+percentage of the original corpus used and the reduction threshold value.
+4. **/datasets/model:** The results of our training are stored here based on the dataset used
+for training, and number of iterations spent training.
+5. **/datasets/translations:** Using the models in /datasets/models and the testing data in
+/datasets/testing we generated a few sample translations and put them here.
+
+#### /docs [on [Google Drive](https://drive.google.com/drive/folders/1efH-6oDGVqrvrLyjAm2XcZqd9f-_SXGO?usp=sharing)]
+Just a few relevant documents for this course like powerpoint presentations on SMT and the
+IBM models.
 
 ### /project
 All of our code is stored here in the form of a python package.
@@ -72,7 +77,7 @@ A few useful command line tools.
 
 <hr>
 
-### Tutorial and Usage Guide
+### Tutorial and Usage Guide for IBM Model 1
 **Note:** all of the CLIs support passing the `-h` or `--help` command line option to find out
 exactly what options they provide. Please use this before running any command to know what all
 of your options are.
