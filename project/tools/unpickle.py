@@ -16,11 +16,10 @@ if __name__ == "__main__":
     parser.add_argument("filename", help="file to unpickle")
     args = parser.parse_args()
     unpickled_data = unpickle(args.filename)
-    import pdb; pdb.set_trace()
     output_filename = ".".join(args.filename.split(".")[:-1]) + ".txt"
     with open(output_filename, "w+") as f:
-        if type(unpickled_data) == List:
+        if isinstance(unpickled_data, list):
             f.write("\n".join(unpickled_data))
-        elif type(unpickled_data) == Dict:
+        elif isinstance(unpickled_data, dict):
             f.write(json.dumps(unpickled_data, indent=4, sort_keys=True))
         f.close()
