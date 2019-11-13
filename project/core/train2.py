@@ -1,5 +1,6 @@
 from typing import List, Dict, Set, Any
 import collections
+import argparse
 from collections import defaultdict
 import time
 import gc
@@ -8,9 +9,8 @@ from project.tools.unpickle import unpickle
 from project.core.train import get_vocab,converged,train,printv,write_back_data
 
 
-def train2(dutch_sentences, english_sentences):
+def train2(dutch_sentences, english_sentences,translation_table_prev):
     a_dict = defaultdict(float)
-    translation_table_prev = unpickle("translation_probabilities_table.pkl")
     translation_table_prev = translation_table_prev["data"]
 
     cnt = 0
@@ -60,20 +60,23 @@ def train2(dutch_sentences, english_sentences):
 
 if __name__ == "__main__":
 
+    # cli
+    parser = argparse.ArgumentParser()
+    parser.add_argument("dutch_sentences_pkl_file", help="Reduced pkl file of dutch sentences(to train on).")
+    parser.add_argument("english_sentences_pkl_file", help="Reduced pkl file of english sentences(to train on).")
+    parser.add_argument("trans_table",help="Translation probabilty table obtained after training IBM Model 1(previously translation_probabilities_table.pkl)")
+    args = parser.parse_args()
 
-    dutch_sentences = unpickle("datasets/training/dutch/dutch_1p_5t.reduced.pkl")
+    dutch_sentences = unpickle(dutch_sentences_pkl_file)
+    english_sentences = unpickle(english_sentences_pkl_file)
+    translation_table_prev = unpickle(trans_table)
     # dutch_sentences = dutch_sentences[:5]
-    english_sentences = unpickle("datasets/training/english/english_1p_5t.reduced.pkl")
     # english_sentences = english_sentences[:5]
 
     # alignment training model:
-    final_alignment_prob,final_translation_prob = train2(dutch_sentences,english_sentences) #a is the translation probabilty b is the alignment prob
+    final_alignment_prob,final_translation_prob = train2(dutch_sentences,english_sentences,translation_table_prev)
+    # dumping these results into pkl files
     with open ('final_alignment_prob.pkl','wb') as f:
         pickle.dump(final_alignment_prob,f)
     with open ('final_translation_prob.pkl','wb') as f:
         pickle.dump(final_translation_prob,f)
-
-
-
-
-
