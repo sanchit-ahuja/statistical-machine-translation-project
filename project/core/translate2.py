@@ -62,6 +62,3 @@ print(handle_alignment(translation_prob,alignment_prob,english_sentence_translat
 # for k in english_sentences:
 #     print(k)
 
-final_list = []
-
-

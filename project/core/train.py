@@ -64,11 +64,8 @@ def train(dutch_sentences: List[str], english_sentences: List[str], max_iteratio
     if resume_from_file:
         printv("Reloading the translation probabilities table... ", verbose, end="")
         reloaded_data = unpickle(resume_from_file)
-        assert isinstance(reloaded_data, Dict)
         iteration = reloaded_data["iteration"]
-        assert isinstance(iteration, int)
         translation_table = reloaded_data["data"]
-        assert isinstance(translation_table, Dict)
         printv("Done.", verbose)
     else:
         printv("Intializing the translation probabilities table... ", verbose, end="")
@@ -135,9 +132,7 @@ if __name__ == "__main__":
 
     printv("Beginning training with the {}% dataset.".format(training_set), args.verbose)
     dutch_sentences = unpickle("datasets/training/dutch/dutch_{}p_5t.reduced.pkl".format(training_set))
-    assert isinstance(dutch_sentences, List)  # for mypy
     english_sentences = unpickle("datasets/training/english/english_{}p_5t.reduced.pkl".format(training_set))
-    assert isinstance(english_sentences, List)  # for mypy
     if args.invert:
         train(english_sentences, dutch_sentences, int(args.max_iterations), float(args.convergence_factor),
               args.output, args.resume_from_file, args.write_back_epoach, args.verbose)

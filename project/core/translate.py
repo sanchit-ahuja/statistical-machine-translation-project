@@ -56,9 +56,7 @@ if __name__ == "__main__":
     printv("Done.", verbose)
     printv("Loading translations probability table... ", verbose, end="")
     unpickled_data = unpickle(args.translation_probabilities_table)
-    assert(isinstance(unpickled_data, Dict))
     translation_table = unpickled_data["data"]
-    assert(isinstance(translation_table, Dict))
     printv("Done.", verbose)
     printv("Translating sentences... ", verbose, end="")
     translated_sentences = [translate(sentence, translation_table, args.augment) for sentence in normalized_sentences]
