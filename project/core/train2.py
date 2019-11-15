@@ -67,9 +67,9 @@ if __name__ == "__main__":
     parser.add_argument("trans_table",help="Translation probabilty table obtained after training IBM Model 1(previously translation_probabilities_table.pkl)")
     args = parser.parse_args()
 
-    dutch_sentences = unpickle(dutch_sentences_pkl_file)
-    english_sentences = unpickle(english_sentences_pkl_file)
-    translation_table_prev = unpickle(trans_table)
+    dutch_sentences = unpickle(args.dutch_sentences_pkl_file)
+    english_sentences = unpickle(args.english_sentences_pkl_file)
+    translation_table_prev = unpickle(args.trans_table)
     # dutch_sentences = dutch_sentences[:5]
     # english_sentences = english_sentences[:5]
 
