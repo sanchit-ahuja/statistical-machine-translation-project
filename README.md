@@ -150,6 +150,16 @@ table and counts in memory simultaneously (since both of them are massive).
 capturing the essence of the sentence.
 4. Synonyms are problematic for exact translation and lead to lower cosine similarity ratings.
 
+
+### Updates:
+To deal with the memory issue, we've replaced the dictionary of dictionaries translation table
+with a list of lists which we refer to as a "translation matrix" which is much more efficient.
+The code added now makes training take less RAM and less disk space. The `-x` option can be
+used to prefer using translation matricies instead of using translation tables.  
+Example usage:  
+`python -m project.core.train -p 5 -m 10 -v -x`  
+`python -m project.core.translate datasets\testing\testdata_dutch.txt -t translation_probabilities_matrix.pkl -v -x`
+
 <hr>
 
 ### IBM Model 2

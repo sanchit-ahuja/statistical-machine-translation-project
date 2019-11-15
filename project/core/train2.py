@@ -6,7 +6,7 @@ import time
 import gc
 import pickle
 from project.tools.unpickle import unpickle
-from project.core.train import get_vocab,converged,train,printv,write_back_data
+from project.core.train import get_vocab,converged,train_table,printv,write_back_data
 
 
 def train2(dutch_sentences, english_sentences,translation_table_prev):

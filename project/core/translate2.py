@@ -5,7 +5,7 @@ import time
 import gc
 import pickle
 from project.tools.unpickle import unpickle
-from project.core.train import get_vocab,converged,train,printv,write_back_data
+from project.core.train import get_vocab,converged,train_table,printv,write_back_data
 from project.core.translate import translate
 
 alignment_prob = unpickle("final_alignment_prob.pkl")
