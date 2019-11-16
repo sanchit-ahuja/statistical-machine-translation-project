@@ -31,17 +31,14 @@ def train2(dutch_sentences, english_sentences,translation_table_prev):
                 for (i,f) in enumerate(dutch_sentence.split(),1):
                     a_dict[(i,j,le,lf)] = 1.0*(1/(lf+1))
                     s_total[e] += translation_table_prev[f][e]*a_dict[(i,j,le,lf)]
-            # print('Normalization')
             #Compute Counts
             for (j,e) in enumerate(english_sentence.split(),1):
                 for (i,f) in enumerate(dutch_sentence.split(),1):
-                    # a_dict[(i,j,le,lf)] = 1.0*(1/(lf+1))
                     c = (translation_table_prev[f][e]*a_dict[(i,j,le,lf)])/s_total[e]
                     count[(e,f)] += c
                     total[f] += c
                     count_a[(i,j,le,lf)] += c
                     total_a[(j,le,lf)] += c
-            # print('Cnt')
 
         #estimate probabilites
         final_translation_prob = defaultdict(float)
