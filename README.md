@@ -4,11 +4,11 @@ at BITS Pilani, Pilani.
 
 Team #14:
   - [Hemanth V. Alluri](https://github.com/Hypro999) (2017A7PS1170P) [Maintainer of the datasets
-  on Google Drive]
+  on [Google Drive](https://drive.google.com/drive/folders/1efH-6oDGVqrvrLyjAm2XcZqd9f-_SXGO?usp=sharing)]
   - [S. Hariharan](https://github.com/hariharan-srikrishnan) (2017A7PS0134P)
   - [Nevin Thomas](https://github.com/lesasi) (2017A7PS1175P)
   - [Sanchit Ahuja](https://github.com/sanchit-ahuja) (2017A3PS0216P) [Maintainer of the
-  GitHub mirror]
+  [GitHub mirror](https://github.com/sanchit-ahuja/ir-project.git)]
   - Satwadhi Das (2016B4A70622P) [Q29udHJpYnV0ZWQgbm90aGluZyB0byB0aGUgcHJvamVjdC4=]
 
 <hr>
