@@ -9,7 +9,6 @@ Team #14:
   - [Nevin Thomas](https://github.com/lesasi) (2017A7PS1175P)
   - [Sanchit Ahuja](https://github.com/sanchit-ahuja) (2017A3PS0216P) [Maintainer of the
   [GitHub mirror](https://github.com/sanchit-ahuja/ir-project.git)]
-  - Satwadhi Das (2016B4A70622P) [Q29udHJpYnV0ZWQgbm90aGluZyB0byB0aGUgcHJvamVjdC4=]
 
 <hr>
 
