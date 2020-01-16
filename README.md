@@ -3,12 +3,10 @@ Official repository for team #14 in *CS F469: Information Retrieval* [2019-20 Fa
 at BITS Pilani, Pilani.  
 
 Team #14:
-  - [Hemanth V. Alluri](https://github.com/Hypro999) (2017A7PS1170P) [Maintainer of the datasets
-  on [Google Drive](https://drive.google.com/drive/folders/1efH-6oDGVqrvrLyjAm2XcZqd9f-_SXGO?usp=sharing)]
-  - [S. Hariharan](https://github.com/hariharan-srikrishnan) (2017A7PS0134P)
+  - [Hemanth V. Alluri](https://github.com/Hypro999) (2017A7PS1170P)
   - [Nevin Thomas](https://github.com/lesasi) (2017A7PS1175P)
-  - [Sanchit Ahuja](https://github.com/sanchit-ahuja) (2017A3PS0216P) [Maintainer of the
-  [GitHub mirror](https://github.com/sanchit-ahuja/ir-project.git)]
+  - [Sanchit Ahuja](https://github.com/sanchit-ahuja) (2017A3PS0216P)
+  - [S. Hariharan](https://github.com/hariharan-srikrishnan) (2017A7PS0134P)
 
 <hr>
 
